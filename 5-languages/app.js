@@ -1,19 +1,16 @@
-// Входные данные
-
-const langEn = 'en';
-const langRu = 'ru';
-const langDe = 'de';
-
 // Решение
+// Записываем входящее значение
 const welcome = prompt(`Выберите язык:`);
-switch (true) {
-    case langEn === 'en':
+
+// switch принимает значение от welcome и приводит к нижнему регистру с помощью "toLowerCase" функции
+switch (welcome.toLowerCase()) {
+    case 'en':
         console.log('Hello!');
         break;
-    case langRu === 'ru':
+    case 'ru':
         console.log('Здравствуйте!');
         break;
-    case langDe === 'de':
+    case 'de':
         console.log('Gutten tag!');
         break;
     default:

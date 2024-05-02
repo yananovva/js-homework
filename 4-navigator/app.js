@@ -7,7 +7,8 @@ const destinationLongitude = 10;
 
 // Решение
 
-let result = Math.sqrt(
+const result = Math.sqrt(
     (destinationLatitude - positionLatitude) ** 2 +
     (destinationLongitude - positionLongitude) ** 2);
 console.log(result);
+
