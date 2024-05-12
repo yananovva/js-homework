@@ -1,28 +1,26 @@
 let myTestPassword = 'пароль';
 
 function crypto(password) {
-    let splitPassword = password.toLowerCase().split('');
+    let splitPassword = password.split('');
+    let middleIndex = Math.round(splitPassword.length / 2);
+    let firstPart = password.slice(0, middleIndex);
+    let secondPart = password.slice(middleIndex);
 
-    let temp = splitPassword[2];
-    splitPassword[2] = splitPassword[0];
-    splitPassword[0] = temp;
+    [firstPart, secondPart] = [secondPart, firstPart];
 
-    return splitPassword.join('');
+    return firstPart.concat(secondPart);
 }
 
-let resultOfCrypto = crypto(myTestPassword);
+let encrypt = crypto(myTestPassword);
+console.log(encrypt);
 
-console.log(resultOfCrypto);
-
-function check(cryptoPassword, password) {
-    let cryptoSplit = cryptoPassword.toLowerCase().split('');
-
-    let temp = cryptoSplit[2];
-    cryptoSplit[2] = cryptoSplit[0];
-    cryptoSplit[0] = temp;
-
-    return cryptoSplit.join('') === password;
+function check(encrypt, password) {
+    if (!encrypt || !password) {
+        console.log('ERROR - Один из параметров пришел пустой');
+        return false;
+    }
+    return crypto(encrypt) === password;
 }
 
-let resultOfCheck = check(resultOfCrypto, myTestPassword);
+let resultOfCheck = check(encrypt, myTestPassword);
 console.log(resultOfCheck);
