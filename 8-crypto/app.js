@@ -8,7 +8,7 @@ function crypto(password) {
 
     [firstPart, secondPart] = [secondPart, firstPart];
 
-    return firstPart.concat(secondPart);
+    return secondPart.concat(firstPart);
 }
 
 let encrypt = crypto(myTestPassword);
