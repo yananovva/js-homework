@@ -1,51 +1,31 @@
-// Входные данные
-
-let cardNumber = '4561-1213-4367-2612';
-
-// Решение
-
-function checkingCardNumber(number) {
-    let totalSum = 0;
-    let isSecondDigit = false;
-
-    number = number.replace(/-/g, '');
-    if (number.length !== 16) {
-        return false;
+function cardLunaValidate(card) {
+    const cardNumber = card
+        .replaceAll('-', '')
+        .split('')
+        .map((x) => Number(x));
+    if (cardNumber.includes(NaN)) {
+        return NaN;
     }
-    if (!isOnlyNumbers(number)) {
-        console.log('Неверный номер карты.');
-        return;
-    }
+    const isEven = (cardNumber.length - 1) % 2 === 0;
 
-    for (let i = number.length - 1; i >= 0; i--) {
-        let digit = parseInt(number[i]);
-        if (isSecondDigit) {
-            digit *= 2;
-            if (digit > 9) {
-                digit -= 9;
-            }
-        }
-        totalSum += digit;
-        isSecondDigit = !isSecondDigit;
+    for (let i = Number(isEven); i < cardNumber.length; i = i + 2) {
+        cardNumber[i] =
+            cardNumber[i] * 2 > 9 ? cardNumber[i] * 2 - 9 : cardNumber[i] * 2;
     }
-    return totalSum % 10 === 0;
+    const sum = cardNumber.reduce((total, el) => total + el);
+    return sum % 10 === 0;
 }
+const card = '234s834503458353';
+const card1 = '2342834503458353';
+const card2 = '4561-2612-1234-5464';
+const card3 = '4561-2612-1534-5464';
 
-function isOnlyNumbers(number) {
-    let result = true;
-    for (const char of number) {
-        if (isNaN(Number(char))) {
-            result = false;
-            break;
-        }
-    }
-    return result;
+function resultTemplate(card) {
+    const startString = `Карта с номером: ${card}`;
+    const endString = `получила результат: ${cardLunaValidate(card)}`;
+    return `${startString} ${endString}`;
 }
-
-// Проверка
-
-if (checkingCardNumber(cardNumber)) {
-    console.log('Номер карты корректен.');
-} else {
-    console.log('Номер карты некорректен.');
-}
+console.log(resultTemplate(card));
+console.log(resultTemplate(card1));
+console.log(resultTemplate(card2));
+console.log(resultTemplate(card3));
