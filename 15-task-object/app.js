@@ -2,72 +2,73 @@
 // и имеет методы: - Добавить задачу - Удалить задачу по id - Обновить имя или приоритет по id
 // - Отсортировать задачи по приоритету
 
+
 const toDoList = {
+    lastId: 0,
     tasks: [],
-    title: 'Помыть посуду',
-    id: 1,
-    priority: 1,
-    addTask: function (title, priority) {
-        const newTask = {
-            id: ++this.id,
-            title: title,
-            priority: priority
-        };
-        this.tasks.push(newTask);
-        console.log(`Задача "${newTask.title}" с приоритетом ${newTask.priority} добавлена (id: ${newTask.id})`);
+    addTask(data) {
+        if (!data) {
+            return this;
+        }
+        data.id = ++this.lastId;
+        this.tasks.push(data);
+        const message = `Задача с "id" = ${data.id}  - успешно добавлена`;
+        console.log(message);
+        return this;
     },
     deleteTask: function (taskId) {
-        const taskIndex = this.tasks.findIndex(task => task.id === taskId);
-
-        if (taskIndex !== -1) {
-            const deletedTask = this.tasks.splice(taskIndex, 1)[0];
-            console.log(`Задача "${deletedTask.title}" (id: ${deletedTask.id}) удалена.`);
-        } else {
-            console.log(`Задача с id ${taskId} не найдена.`);
+        const [task] = this.tasks.filter((task) => task.id !== taskId);
+        if (!task) {
+            console.log(`Задача с "id" = ${taskId}  - не найдена.`);
+            return;
         }
+        console.log(`Задача "${task.title}" (id: ${task.id}) - успешно удалена.`);
+        this.tasks = this.tasks.filter(({ id }) => id !== task.id);
+        return this;
     },
-    updateTask: function (taskId, updatedTitle, updatedPriority) {
-        const taskToUpdate = this.tasks.find(task => task.id === taskId);
-
-        if (taskToUpdate) {
-            taskToUpdate.title = updatedTitle;
-            taskToUpdate.priority = updatedPriority;
-            console.log(`Задача с id ${taskId} обновлена: новое название - "${updatedTitle}", новый приоритет - ${updatedPriority}.`);
-        } else {
-            console.log(`Задача с id ${taskId} не найдена.`);
+    updateTask: function (taskId, data) {
+        // data = {title: 'Новое название, priority: 22}
+        const task = this.tasks.find(({ id }) => id === taskId);
+        if (!task) {
+            return this;
         }
+        // task = {id: 4, title: 'Я заголовок', proirity: 4}
+        Object.assign(task, data);
+        // task = {id: 4, title: 'Новое название', proirity: 22}
+        return this;
     },
-    sortTasks: function (sortBy, order = 'asc') {
+    sortTasks: function (sortBy = 'id', desc = false) {
         const sortFunctions = {
             id: (a, b) => a.id - b.id,
-            priority: (a, b) => a.priority - b.priority
+            priority: (a, b) => a.priority - b.priority,
         };
-
-        const sortFunction = sortFunctions[sortBy] || sortFunctions.id;
-
+        if (!sortFunctions[sortBy]){
+            console.log(`Сортировка по ключу "${sortBy}" невозможна, доступные ключи: [${Object.keys(sortFunctions)}]`);
+            return;
+        }
         this.tasks.sort((a, b) => {
-            const result = sortFunction(a, b);
-            return order === 'desc' ? -result : result;
+            const result = sortFunctions[sortBy](a, b);
+            return desc ? -result : result;
         });
 
-        console.log(`Задачи отсортированы по ${sortBy} в порядке ${order}.`);
-    }
+        console.log(`Задачи отсортированы по ${sortBy} в порядке ${desc ? 'DESC' : 'ASC'}.`);
+    },
 };
 
+const data1 = { title: 'Данные номер 1', priority: 5 },
+    data2 = { title: 'Данные номер 2', priority: 2 },
+    data3 = { title: 'Данные номер 3', priority: 7 },
+    data4 = { title: 'Данные номер 4', priority: 4 },
+    data5 = { title: 'Данные номер 5', priority: 11 };
 
-toDoList.addTask("Сделать уборку", 2);
-toDoList.addTask("Сходить в спортзал", 3);
-console.log(toDoList.tasks);
+toDoList
+    .addTask(data1)
+    .addTask(data2)
+    .addTask(data3)
+    .addTask(data4)
+    .addTask(data5)
+    .deleteTask(3)
+    .updateTask(4, { title: 'Новое название', priority: 22 })
+    .sortTasks('id');
 
-toDoList.deleteTask(2);
-toDoList.deleteTask(4);
-console.log(toDoList.tasks);
-
-toDoList.updateTask(2, 'Подготовить презентацию', 1);
-toDoList.updateTask(4, 'Новая задача', 2);
-console.log(toDoList.tasks);
-
-toDoList.sortTasks('priority');
-console.log(toDoList.tasks);
-toDoList.sortTasks('id', 'desc');
 console.log(toDoList.tasks);
