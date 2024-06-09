@@ -7,17 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css"/>
-    <script src="./app.js"></script>
 </head>
 <body style="background-color: #1c1b21; text-align: center">
 <div class="calculator">
     <input type="number" id="num1" class="input-field" placeholder="Число 1">
     <input type="number" id="num2" class="input-field" placeholder="Число 2">
-    <button id="add" class="button">+</button>
-    <button id="subtract" class="button">-</button>
-    <button id="multiply" class="button">*</button>
-    <button id="divide" class="button">/</button>
+    <button data-action="multiply">*</button>
+    <button data-action="divide">/</button>
+    <button data-action="add">+</button>
+    <button data-action="subtract">-</button>
     <p><span id="result"></span></p>
 </div>
+<script src="./app.js"></script>
 </body>
 </html>

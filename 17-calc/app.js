@@ -1,16 +1,27 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const num1Input = document.getElementById('num1');
     const num2Input = document.getElementById('num2');
-    const addButton = document.getElementById('add');
-    const subtractButton = document.getElementById('subtract');
-    const multiplyButton = document.getElementById('multiply');
-    const divideButton = document.getElementById('divide');
     const resultSpan = document.getElementById('result');
 
-    addButton.addEventListener('click', addNumbers);
-    subtractButton.addEventListener('click', subtractNumbers);
-    multiplyButton.addEventListener('click', multiplyNumbers);
-    divideButton.addEventListener('click', divideNumbers);
+    document.querySelectorAll('button[data-action]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const action = button.dataset.action;
+            switch (action) {
+                case 'multiply':
+                    multiplyNumbers();
+                    break;
+                case 'divide':
+                    divideNumbers();
+                    break;
+                case 'add':
+                    addNumbers();
+                    break;
+                case 'subtract':
+                    subtractNumbers();
+                    break;
+            }
+        });
+    });
 
     function addNumbers() {
         const num1 = parseFloat(num1Input.value);
